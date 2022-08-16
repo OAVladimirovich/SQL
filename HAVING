@@ -1,0 +1,116 @@
+Дана таблица staff:
+____________________________________staff__________________________________________________________________________________________
+| id  |	first_name | last_name | sex    | birth_date | position     | phone         | salary | date_of_hiring | date_of_dismissal |
+| 1   |	Stepan     | Shvets    | male   | 1990-05-07 | teacher      | +380984805362 | 7500   | 2013-07-01     | 2017-01-15        |
+...................................................................................................................................
+| 8   | Yuriy      | Dyachuk   | male   | 1988-12-01 | head teacher | +380984805362 | 11100  | 2014-11-05     | NULL              |
+Найдите среднее значение зарплаты для каждой должности работников, которые до сих пор работают на работе. Результат выводить только в случае, если среднее значение зарплаты составляет более 10000.
+Результат должен содержать следующие колонки: position, average_salary.
+
+SELECT position, 
+    AVG(salary) AS average_salary
+FROM staff
+WHERE date_of_dismissal IS NULL
+GROUP BY position
+HAVING AVG(salary) > 10000
+ORDER BY position
+
+
+Дано таблицы category и product.
+Найдите категории, к которым относится четыре или более уникальных названий товаров.
+Результат должен содержать следующие колонки: category_name, number_of_products.
+Примечания:
+не забудьте сгруппировать результаты по одному из столбцов, которые есть в вашем SELECT
+эту задачу можно выполнить без сортировки
+_______category_____
+| id |    name      | 
+| 2  | Seafood      | 
+.....................
+| 4  | Grains       |
+
+__________________________product_____________________
+| id | name        | amount   | price   | category_id | 
+| 2  | Shrimp      | 50       | 450     | 2           |
+.......................................................
+| 8  | Flour       | 20       | 60      | 4           |
+
+SELECT category.name AS category_name,
+    COUNT(product.name) AS number_of_products
+FROM product
+INNER JOIN category
+ON category.id = product.category_id
+GROUP BY category.name
+HAVING COUNT(product.name) >= 4 
+
+
+Дана таблица employee.
+__________________________________employee______________________________
+| id | first_name  | last_name   | department_id | hiring_date | salary |
+| 1  | Steven      | King        | 1             | 2019-12-02  | 15000  |
+.........................................................................
+| 22 | Adam        | Fripp       | 8             | 2021-03-17  | 12000  |
+Найти информацию о количестве работников, которые устраивались на работу в каждом месяце. Показать результат только в случае, если количество таких работников 3 и больше.
+Результат должен содержать следующие колонки:
+месяц из колонки hiring_date: month
+количество работников, которые устроились на работу в этот месяц: number_of_employees
+
+SELECT EXTRACT(MONTH FROM hiring_date) AS month,
+    COUNT(last_name) AS number_of_employees
+FROM employee
+GROUP BY EXTRACT(MONTH FROM hiring_date)
+HAVING COUNT(last_name) >= 3
+ORDER By EXTRACT(MONTH FROM hiring_date) 
+
+
+Дано таблицы category и product.
+Найдите название категорий, в которых общее количество всех товаров составляет более 80.
+Результат должен содержать следующие колонки: category_name, total_amount.
+Примечания:
+не забудьте сгруппировать результаты по одному из столбцов, которые есть в вашем SELECT
+эту задачу можно выполнить без сортировки
+_______category_____
+| id |    name      | 
+| 2  | Seafood      | 
+.....................
+| 4  | Grains       |
+
+__________________________product_____________________
+| id | name        | amount   | price   | category_id | 
+| 2  | Shrimp      | 50       | 450     | 2           |
+.......................................................
+| 8  | Flour       | 20       | 60      | 4           |
+
+SELECT category.name AS category_name,
+    SUM(product.amount) AS total_amount 
+FROM category
+INNER JOIN product
+ON category.id = product.category_id
+GROUP BY category.name
+HAVING SUM(product.amount) > 80
+
+
+Дано таблицы scoreboard и pupil.
+Найдите средние оценки по каждому предмету за все годы обучения ученика Eugen Tsven. Результат выводить в том случае, если средний балл 10 и больше.
+Результат должен содержать следующие колонки:
+предмет: subject
+средний балл: average_mark
+____________________________________pupil_____________________________________________________
+| id  |	first_name | last_name | sex    | birth_date | mother_phone  | father_phone  | city  |
+| 1   |	Eugen      | Tsven     | male   | 2000-12-01 | +380967826174 | +380998161172 | Kyiv  |
+..............................................................................................
+| 10  | Inna       | Kostenko  | female | 2009-10-15 | +380981865416 | +380981458216 | Irpin |
+
+_________________________scoreboard___________________________
+| id  | pupil_id  | subject      | mark | semester        | year |
+| 4   | 1         | Geography    | 10   | FIRST SEMESTER  | 2015 |
+...............................................................
+| 167 | 10        | Math         | 9    | SECOND SEMESTER | 2020 |
+
+SELECT scoreboard.subject AS subject,
+    AVG(scoreboard.mark) AS average_mark
+FROM scoreboard
+INNER JOIN pupil
+ON pupil.id = scoreboard.pupil_id
+WHERE pupil.last_name LIKE 'Tsven'
+GROUP BY scoreboard.subject
+HAVING AVG(scoreboard.mark) >= 10
