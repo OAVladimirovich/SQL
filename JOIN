@@ -1,0 +1,406 @@
+Дано таблицы department и employee.
+Отобразите имя, фамилию и названия отдела для всех сотрудников из отделов с идентификаторами 2 или 7.
+Результат должен содержать следующие колонки: first_name, last_name, department_name.
+____________department__________
+| id |    name      |  budget   |
+| 1  | Marketing    | 200000    |
+.................................
+| 8  | Recruiting   | 750000    |
+
+__________________________________employee______________________________
+| id | first_name  | last_name   | department_id | hiring_date | salary |
+| 1  | Steven      | King        | 1             | 2019-12-02  | 15000  |
+.........................................................................
+| 22 | Adam        | Fripp       | 8             | 2021-03-17  | 12000  |
+
+SELECT employee.first_name, employee.last_name, department.name AS DEPARTMENT_NAME
+FROM employee 
+INNER JOIN department 
+ON department.id = employee.department_id
+WHERE department.id = 2 
+OR department.id = 7
+
+
+Дано таблицы category и product.
+Найдите общее количество всех продуктов в категории Seafood (используйте колонку amount).
+Дайте результирующей колонке временное имя - total_amount.
+_______category_____
+| id |    name      | 
+| 2  | Seafood      | 
+.....................
+| 4  | Grains       |
+
+__________________________product_____________________
+| id | name        | amount   | price   | category_id | 
+| 2  | Shrimp      | 50       | 450     | 2           |
+.......................................................
+| 8  | Flour       | 20       | 60      | 4           |
+
+SELECT SUM(product.amount) AS total_amount
+FROM product
+INNER JOIN category
+ON product.category_id = category.id
+WHERE category.name = 'Seafood'
+
+
+Дано таблицы department и employee.
+Отобразите тех работников, у которых фамилия содержит букву 'n'.
+Результат должен содержать имя и фамилию сотрудников, а также название их отдела.
+Результат не должен содержать информацию о работниках, которые не относятся к какому-то из отделов.
+____________department__________
+| id |    name      |  budget   |
+| 1  | Marketing    | 200000    |
+.................................
+| 8  | Recruiting   | 750000    |
+
+__________________________________employee______________________________
+| id | first_name  | last_name   | department_id | hiring_date | salary |
+| 1  | Steven      | King        | 1             | 2019-12-02  | 15000  |
+.........................................................................
+| 22 | Adam        | Fripp       | 8             | 2021-03-17  | 12000  |
+
+SELECT employee.first_name, employee.last_name, department.name
+FROM employee
+INNER JOIN department
+ON employee.department_id = department.id
+WHERE employee.last_name LIKE '%n%' 
+
+
+Дано таблицы category и product.
+Найдите уникальные названия категорий, к которым относятся продукты, которые стоят меньше 300.
+_______category_____
+| id |    name      | 
+| 2  | Seafood      | 
+.....................
+| 4  | Grains       |
+
+__________________________product_____________________
+| id | name        | amount   | price   | category_id | 
+| 2  | Shrimp      | 50       | 450     | 2           |
+.......................................................
+| 8  | Flour       | 20       | 60      | 4           |
+
+SELECT DISTINCT category.name
+FROM category
+INNER JOIN product
+ON category.id = product. category_id
+WHERE product.price < 300
+
+
+Дано таблицы department и employee.
+Отобразите название отделов и максимальную зарплату работников, которые там работают.
+Результат должен содержать следующие колонки:
+название отдела: department_name
+максимальную зарплату: max_salary
+Примечания:
+не забудьте сгруппировать результаты по одному из столбцов, которые есть в вашем SELECT
+эту задачу можно выполнить без сортировки
+____________department__________
+| id |    name      |  budget   |
+| 1  | Marketing    | 200000    |
+.................................
+| 8  | Recruiting   | 750000    |
+
+__________________________________employee______________________________
+| id | first_name  | last_name   | department_id | hiring_date | salary |
+| 1  | Steven      | King        | 1             | 2019-12-02  | 15000  |
+.........................................................................
+| 22 | Adam        | Fripp       | 8             | 2021-03-17  | 12000  |
+
+SELECT DISTINCT department.name AS department_name, 
+MAX(employee.salary) AS max_salary
+FROM employee
+INNER JOIN department
+ON employee.department_id = department.id
+WHERE employee.salary = employee.salary
+GROUP BY department_name 
+
+
+Дано таблицы category и product.
+Найдите, сколько стоят самые дешевые товары в каждой категории.
+Результат должен содержать следующие колонки:
+название категории: category_name
+цену самого дешевого товара: min_price
+Примечания:
+не забудьте сгруппировать результаты по одному из столбцов, которые есть в вашем SELECT
+эту задачу можно выполнить без сортировки
+_______category_____
+| id |    name      | 
+| 2  | Seafood      | 
+.....................
+| 4  | Grains       |
+
+__________________________product_____________________
+| id | name        | amount   | price   | category_id | 
+| 2  | Shrimp      | 50       | 450     | 2           |
+.......................................................
+| 8  | Flour       | 20       | 60      | 4           |
+
+SELECT category.name AS category_name, 
+MIN(product.price) AS min_price 
+FROM category
+RIGHT JOIN product
+ON category.id = product.category_id
+GROUP BY category.name 
+
+
+Дано таблицы department и employee.
+Отобразите название отдела и количества сотрудников в каждом отделе.
+Результат должен содержать следующие колонки:
+название отдела: department_name
+количество сотрудников: number_of_employees
+Примечания:
+результат не должен включать отделы, где нет работников
+не забудьте сгруппировать результаты по одному из столбцов, которые есть в вашем SELECT
+эту задачу можно выполнить без сортировки
+____________department__________
+| id |    name      |  budget   |
+| 1  | Marketing    | 200000    |
+.................................
+| 8  | Recruiting   | 750000    |
+
+__________________________________employee______________________________
+| id | first_name  | last_name   | department_id | hiring_date | salary |
+| 1  | Steven      | King        | 1             | 2019-12-02  | 15000  |
+.........................................................................
+| 22 | Adam        | Fripp       | 8             | 2021-03-17  | 12000  |
+
+SELECT department.name AS department_name, 
+COUNT(employee.id) AS NUMBER_OF_EMPLOYEES
+FROM department
+INNER JOIN employee
+ON department.id = employee.department_id
+WHERE employee.department_id IS NOT NULL
+GROUP BY department.name
+
+
+Дано таблицы category и product.
+Найдите количество типов товаров, которые относятся к категориям 'Meat' или 'Grains'.
+Результат должен содержать следующие колонки:
+название категории: category_name
+количество продуктов: number_of_products
+Примечания:
+не забудьте сгруппировать результаты по одному из столбцов, которые есть в вашем SELECT
+эту задачу можно выполнить без сортировки
+_______category_____
+| id |    name      |
+| 2  | Seafood      |
+.....................
+| 4  | Grains       |
+
+__________________________product_____________________
+| id | name        | amount   | price   | category_id |
+| 2  | Shrimp      | 50       | 450     | 2           |
+.......................................................
+| 8  | Flour       | 20       | 60      | 4           |
+
+SELECT category.name AS category_name, 
+COUNT(product.name) AS number_of_products
+FROM product
+INNER JOIN category
+ON category.id = product.category_id
+WHERE category.name = 'Grains' 
+OR category.name = 'Meat'
+GROUP BY category.name
+
+
+Дано таблицы scoreboard и pupil.
+Найдите среднюю оценку по каждому предмету для всех учеников, проживающих в Киеве.
+Отсортируйте предметы по алфавиту.
+Результат должен содержать следующие колонки:
+название предмета: subject
+среднюю оценку: average_mark
+____________________________________pupil_____________________________________________________
+| id  |	first_name | last_name | sex    | birth_date | mother_phone  | father_phone  | city  |
+| 1   |	Eugen      | Tsven     | male   | 2000-12-01 | +380967826174 | +380998161172 | Kyiv  |
+..............................................................................................
+| 10  | Inna       | Kostenko  | female | 2009-10-15 | +380981865416 | +380981458216 | Irpin |
+
+_________________________scoreboard___________________________
+| id  | pupil_id  | subject      | mark | semester        | year |
+| 4   | 1         | Geography    | 10   | FIRST SEMESTER  | 2015 |
+...............................................................
+| 167 | 10        | Math         | 9    | SECOND SEMESTER | 2020 |
+
+SELECT scoreboard.subject AS subject, 
+AVG(scoreboard.mark) AS average_mark
+FROM scoreboard
+INNER JOIN pupil
+ON pupil.id = scoreboard.pupil_id
+WHERE pupil.city = 'Kyiv'
+GROUP BY scoreboard.subject
+
+
+Дано таблицы scoreboard и pupil.
+Найдите средние оценки average_mark отдельно по каждому предмету за все годы обучения ученицы Anna Ivaniuk.
+Не забудьте:
+сгруппировать результат по колонке subject
+отсортировать результат по средней оценке в порядке убывания (используйте псевдоним average_mark для сортировки)
+Результат должен содержать две колонки:
+название предмета subject
+среднюю оценку average_mark
+____________________________________pupil_____________________________________________________
+| id  |	first_name | last_name | sex    | birth_date | mother_phone  | father_phone  | city  |
+| 1   |	Eugen      | Tsven     | male   | 2000-12-01 | +380967826174 | +380998161172 | Kyiv  |
+..............................................................................................
+| 10  | Inna       | Kostenko  | female | 2009-10-15 | +380981865416 | +380981458216 | Irpin |
+
+___________________________scoreboard_____________________________
+| id  | pupil_id  | subject      | mark | semester        | year |
+| 4   | 1         | Geography    | 10   | FIRST SEMESTER  | 2015 |
+..................................................................
+| 167 | 10        | Math         | 9    | SECOND SEMESTER | 2020 |
+
+SELECT scoreboard.subject, 
+AVG(scoreboard.mark) AS average_mark
+FROM pupil
+INNER JOIN scoreboard
+ON pupil.id = scoreboard.pupil_id
+WHERE pupil.last_name = 'Ivaniuk'
+GROUP BY scoreboard.subject
+ORDER BY AVG(scoreboard.mark) DESC
+
+
+Дано таблицы department и employee.
+Отобразите название отдела, среднюю заработную плату и количество работников, работающих в каждом из отделов.
+Результат должен содержать следующие колонки:
+название отдела: department_name
+среднюю зарплату сотрудников: average_salary
+количество сотрудников: number_of_employees
+Примечания:
+результат не должен включать отделы, где нет работников
+не забудьте сгруппировать результаты по одному из столбцов, которые есть в вашем SELECT
+эту задачу можно выполнить без сортировки
+____________department__________
+| id |    name      |  budget   |
+| 1  | Marketing    | 200000    |
+.................................
+| 8  | Recruiting   | 750000    |
+
+__________________________________employee______________________________
+| id | first_name  | last_name   | department_id | hiring_date | salary |
+| 1  | Steven      | King        | 1             | 2019-12-02  | 15000  |
+.........................................................................
+| 22 | Adam        | Fripp       | 8             | 2021-03-17  | 12000  |
+
+SELECT department.name AS department_name,
+    AVG(employee.salary) AS average_salary,
+    COUNT(employee.id) AS number_of_employees
+FROM employee
+INNER JOIN department
+ON department.id = employee.department_id
+WHERE employee.hiring_date IS NOT NULL
+GROUP BY department.name
+ORDER BY department.name
+
+
+Дано таблицы scoreboard и pupil.
+Найдите средний балл каждого ученика по всем школьным предметам за все годы обучения. Результат отсортируйте по колонке id из таблицы pupil.
+Результат должен содержать следующие колонки:
+имя ученика: first_name
+фамилия ученика: last_name
+средний балл: average_mark
+____________________________________pupil_____________________________________________________
+| id  |	first_name | last_name | sex    | birth_date | mother_phone  | father_phone  | city  |
+| 1   |	Eugen      | Tsven     | male   | 2000-12-01 | +380967826174 | +380998161172 | Kyiv  |
+..............................................................................................
+| 10  | Inna       | Kostenko  | female | 2009-10-15 | +380981865416 | +380981458216 | Irpin |
+
+_________________________scoreboard___________________________
+| id  | pupil_id  | subject      | mark | semester        | year |
+| 4   | 1         | Geography    | 10   | FIRST SEMESTER  | 2015 |
+...............................................................
+| 167 | 10        | Math         | 9    | SECOND SEMESTER | 2020 |
+
+SELECT pupil.first_name AS first_name, 
+    pupil.last_name AS last_name, 
+    AVG(scoreboard.mark) AS average_mark
+FROM pupil
+INNER JOIN scoreboard
+ON pupil.id = scoreboard.pupil_id
+GROUP BY pupil.first_name, pupil.last_name
+ORDER BY pupil.id
+
+
+Дано таблицы scoreboard и pupil.
+Найдите среднюю оценку, которую ученики, рожденные после 01.01.2005 года, получают ежегодно по каждому предмету. Предметы отсортируйте в алфавитном порядке, а годы по убыванию.
+Результат должен содержать следующие колонки:
+предмет: subject
+год: year
+средний балл: average_mark
+____________________________________pupil_____________________________________________________
+| id  |	first_name | last_name | sex    | birth_date | mother_phone  | father_phone  | city  |
+| 1   |	Eugen      | Tsven     | male   | 2000-12-01 | +380967826174 | +380998161172 | Kyiv  |
+..............................................................................................
+| 10  | Inna       | Kostenko  | female | 2009-10-15 | +380981865416 | +380981458216 | Irpin |
+
+_________________________scoreboard___________________________
+| id  | pupil_id  | subject      | mark | semester        | year |
+| 4   | 1         | Geography    | 10   | FIRST SEMESTER  | 2015 |
+...............................................................
+| 167 | 10        | Math         | 9    | SECOND SEMESTER | 2020 |
+
+SELECT scoreboard.subject AS subject,
+    scoreboard.year AS year,
+    AVG(scoreboard.mark) AS average_mark
+FROM scoreboard
+INNER JOIN pupil
+ON pupil.id = scoreboard.pupil_id
+WHERE scoreboard.year 
+BETWEEN 2017 AND 2020
+GROUP BY scoreboard.subject, scoreboard.year
+ORDER BY scoreboard.subject, scoreboard.year DESC
+
+
+Дано таблицы department и employee.
+Показать все отделы, в том числе те, в которых нет сотрудников.
+Результат должен содержать следующие колонки:
+название департамента: department_name
+имя работника: first_name
+фамилия работника: last_name
+В этой задаче не нужно группировать или сортировать данные!
+____________department__________
+| id |    name      |  budget   |
+| 1  | Marketing    | 200000    |
+.................................
+| 8  | Recruiting   | 750000    |
+
+__________________________________employee______________________________
+| id | first_name  | last_name   | department_id | hiring_date | salary |
+| 1  | Steven      | King        | 1             | 2019-12-02  | 15000  |
+.........................................................................
+| 22 | Adam        | Fripp       | 8             
+
+SELECT department.name AS department_name,
+    employee.first_name AS first_name,
+    employee.last_name AS last_name
+FROM department
+LEFT JOIN employee
+ON department.id = employee.department_id
+
+
+Дано таблицы department и employee.
+Отобразить имя, фамилию и название отдела для всех работников, независимо от того, относятся ли они к какому-то из отделов.
+Результат должен содержать следующие колонки:
+название отдела: department_name
+имя работника: first_name
+фамилия работника: last_name
+В этой задаче не нужно группировать или сортировать данные!
+____________department__________
+| id |    name      |  budget   |
+| 1  | Marketing    | 200000    |
+.................................
+| 8  | Recruiting   | 750000    |
+
+__________________________________employee______________________________
+| id | first_name  | last_name   | department_id | hiring_date | salary |
+| 1  | Steven      | King        | 1             | 2019-12-02  | 15000  |
+.........................................................................
+| 22 | Adam        | Fripp       | 8             |
+
+SELECT department.name AS department_name,
+    employee.first_name AS first_name,
+    employee.last_name AS last_name
+FROM department
+RIGHT JOIN employee
+ON department.id = employee.department_id
