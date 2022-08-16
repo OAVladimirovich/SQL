@@ -1,0 +1,226 @@
+Дана таблица dish:
+_______________________dish_______________________
+| id  |	name         | price | weight | calories |
+| 1   |	Baked potato | 30    | 200    | 300      |
+..................................................
+| 10  | Omelette     | 85    | 180    | 190      |
+Найти, сколько калорий имеет наименее калорийное блюдо. Результирующей колонке задать временное название - calories.
+
+SELECT MIN(calories) AS calories
+FROM dish
+
+
+Дана таблица book:
+____________________________________book_________________________________
+| id  |	title                           | publish_year | number_of_pages| 
+| 1   |	Functional Skills Maths Level 1	| 2009         | 232            | 
+.........................................................................
+| 10  | See Inside Your Body            | 2015         | 216            | 
+Найти, сколько страниц содержит наименьшая книга. Результирующей колонке задать временное название - number_of_pages.
+
+SELECT MIN(number_of_pages) AS number_of_pages
+FROM book
+
+
+Дана таблица staff:
+____________________________________staff__________________________________________________________________________________________
+| id  |	first_name | last_name | sex    | birth_date | position     | phone         | salary | date_of_hiring | date_of_dismissal |
+| 1   |	Stepan     | Shvets    | male   | 1990-05-07 | teacher      | +380984805362 | 7500   | 2013-07-01     | 2017-01-15        |
+...................................................................................................................................
+| 8   | Yuriy      | Dyachuk   | male   | 1988-12-01 | head teacher | +380984805362 | 11100  | 2014-11-05     | NULL              |
+Найти дату, когда было взято на работу первого работника. Результирующей колонке задать временное название - hiring_date.
+
+SELECT MIN(date_of_hiring) AS hiring_date
+FROM staff
+
+
+Дана таблица staff:
+____________________________________staff__________________________________________________________________________________________
+| id  |	first_name | last_name | sex    | birth_date | position     | phone         | salary | date_of_hiring | date_of_dismissal |
+| 1   |	Alexandr   | Ivanov    | male   | 1990-10-23 | teacher      | +380970560367 | 10000  | 2015-12-01     | NULL              |
+...................................................................................................................................
+| 8   | Yuriy      | Dyachuk   | male   | 1988-12-01 | head teacher | +380984805362 | 11100  | 2014-11-05     | NULL              |
+Найти дату рождения самого младшего работника, который уволился с работы. Результирующей колонке задать временное название - birth_date.
+
+SELECT MAX(birth_date) AS birth_date
+FROM staff
+WHERE date_of_dismissal IS NOT NULL
+
+
+Дана таблица staff:
+____________________________________staff__________________________________________________________________________________________
+| id  |	first_name | last_name | sex    | birth_date | position     | phone         | salary | date_of_hiring | date_of_dismissal |
+| 1   |	Stepan     | Shvets    | male   | 1990-05-07 | teacher      | +380984805362 | 7500   | 2013-07-01     | 2017-01-15        |
+...................................................................................................................................
+| 8   | Yuriy      | Dyachuk   | male   | 1988-12-01 | head teacher | +380984805362 | 11100  | 2014-11-05     | NULL              |
+Найти самую большую зарплату среди работников, которые:
+все еще работают на работе
+имеют должность teacher
+Результирующей колонке задать временное название - max_salary.
+
+SELECT MAX(salary) AS max_salary
+FROM staff
+WHERE date_of_dismissal IS NULL
+AND position = 'teacher'
+
+
+Дана таблица pupil:
+____________________________________pupil_____________________________________________________
+| id  |	first_name | last_name | sex    | birth_date | mother_phone  | father_phone  | city  |
+| 1   |	Eugen      | Tsven     | male   | 2000-12-01 | +380967826174 | +380998161172 | Kyiv  |
+..............................................................................................
+| 10  | Inna       | Kostenko  | female | 2009-10-15 | +380981865416 | +380981458216 | Irpin |
+Найдите фамилию ученика, который живет НЕ в Киеве и является последним в списке учеников, отсортированном по фамилии.
+Результирующей колонке задать временное название - last_name.
+
+SELECT last_name 
+FROM pupil
+WHERE city != 'Kyiv'
+ORDER BY last_name DESC
+LIMIT 1
+
+
+Дана таблица dish:
+_______________________dish_______________________
+| id  |	name         | price | weight | calories |
+| 1   |	Baked potato | 30    | 200    | 300      |
+..................................................
+| 10  | Omelette     | 85    | 180    | 190      |
+Найдите среднее количество калорий блюд, стоимость которых составляет 100 и более. Результирующей колонке задать временное название - calories.
+
+SELECT AVG(calories) AS calories
+FROM dish
+WHERE price >= 100
+
+
+Дана таблица dish:
+_______________________dish_______________________
+| id  |	name         | price | weight | calories |
+| 1   |	Baked potato | 30    | 200    | 300      |
+..................................................
+| 10  | Omelette     | 85    | 180    | 190      |
+Найдите средний вес блюд, содержащих меньше 300 калорий. Результирующей колонке задать временное название - average_weight.
+
+SELECT AVG(weight) AS average_weight
+FROM dish
+WHERE calories < 300
+
+
+Дана таблица staff:
+____________________________________staff__________________________________________________________________________________________
+| id  |	first_name | last_name | sex    | birth_date | position     | phone         | salary | date_of_hiring | date_of_dismissal |
+| 1   |	Stepan     | Shvets    | male   | 1990-05-07 | teacher      | +380984805362 | 7500   | 2013-07-01     | 2017-01-15        |
+...................................................................................................................................
+| 8   | Yuriy      | Dyachuk   | male   | 1988-12-01 | head teacher | +380984805362 | 11100  | 2014-11-05     | NULL              |
+Найдите среднюю зарплату всех работников, пришедших на работу после 01.01.2015. Результирующей колонке задать временное название - average_salary.
+
+SELECT AVG(salary) AS average_salary
+FROM staff
+WHERE date_of_hiring > '2015-01-01'
+
+
+Дана таблица dish:
+_______________________dish_______________________
+| id  |	name         | price | weight | calories |
+| 1   |	Baked potato | 30    | 200    | 300      |
+..................................................
+| 10  | Omelette     | 85    | 180    | 190      |
+Найдите суммарное количество калорий, которое получит человек, если съест три блюда: 'Baked potato', 'Crumble' и 'Meatball'.
+Результирующей колонке задать временное название - total_calories.
+
+SELECT SUM(calories) AS total_calories
+FROM dish
+WHERE name IN('Baked potato', 'Crumble', 'Meatball')]
+
+
+Дана таблица dish:
+_______________________dish_______________________
+| id  |	name         | price | weight | calories |
+| 1   |	Baked potato | 30    | 200    | 300      |
+..................................................
+| 10  | Omelette     | 85    | 180    | 190      |
+Найдите общую стоимость блюд, названия которых начинаются на букву 'С'. Результирующей колонке задать временное название - total_price.
+
+SELECT SUM(price) AS total_price
+FROM dish
+WHERE name
+LIKE 'C%'
+
+
+Дана таблица book:
+____________________________________book_________________________________
+| id  |	title                           | publish_year | number_of_pages| 
+| 1   |	Functional Skills Maths Level 1	| 2009         | 232            | 
+.........................................................................
+| 10  | See Inside Your Body            | 2015         | 216            | 
+Нужно найти общее количество страниц всех книг, выпущенных после 2012 года. Результирующей колонке задать временное название - total_number_of_pages.
+
+SELECT SUM(number_of_pages) AS total_number_of_pages
+FROM book
+WHERE publish_year > 2012
+
+
+Дана таблица pupil:
+____________________________________pupil_____________________________________________________
+| id  |	first_name | last_name | sex    | birth_date | mother_phone  | father_phone  | city  |
+| 1   |	Eugen      | Tsven     | male   | 2000-12-01 | +380967826174 | +380998161172 | Kyiv  |
+..............................................................................................
+| 10  | Inna       | Kostenko  | female | 2009-10-15 | +380981865416 | +380981458216 | Irpin |
+Найти количество учеников, которые проживают в Киеве. Результирующей колонке задать временное название - number_of_pupils.
+
+SELECT COUNT(city) AS number_of_pupils
+FROM pupil
+WHERE city = 'Kyiv'
+
+
+Дана таблица staff:
+____________________________________staff__________________________________________________________________________________________
+| id  |	first_name | last_name | sex    | birth_date | position     | phone         | salary | date_of_hiring | date_of_dismissal |
+| 1   |	Stepan     | Shvets    | male   | 1990-05-07 | teacher      | +380984805362 | 7500   | 2013-07-01     | NULL              |
+...................................................................................................................................
+| 8   | Yuriy      | Dyachuk   | male   | 1988-12-01 | head teacher | +380984805362 | 11100  | 2014-11-05     | NULL              |
+Найдите количество уволенных сотрудников. Результирующей колонке задать временное название - non_working_staff.
+
+SELECT COUNT(id) AS non_working_staff
+FROM staff
+WHERE date_of_dismissal IS NOT NULL
+
+
+Дана таблица book:
+____________________________________book_________________________________
+| id  |	title                           | publish_year | number_of_pages| 
+| 1   |	Functional Skills Maths Level 1	| 2009         | 232            | 
+.........................................................................
+| 10  | See Inside Your Body            | 2015         | 216            | 
+Найдите количество книг, выпущенных в период с 2012 по 2017 год включительно. Результирующей колонке задать временное название - number_of_books.
+
+SELECT COUNT(id) AS number_of_books
+FROM book
+WHERE publish_year BETWEEN 2012 AND 2017
+
+
+Дана таблица pupil:
+____________________________________pupil_____________________________________________________
+| id  |	first_name | last_name | sex    | birth_date | mother_phone  | father_phone  | city  |
+| 1   |	Eugen      | Tsven     | male   | 2000-12-01 | +380967826174 | +380998161172 | Kyiv  |
+..............................................................................................
+| 10  | Inna       | Kostenko  | female | 2009-10-15 | +380981865416 | NULL          | Irpin |
+Нужно найти количество учеников, для которых известна информация о номере телефона отца. Результирующей колонке задать временное название - number_of_pupils.
+
+SELECT COUNT(id) AS number_of_pupils
+FROM pupil
+WHERE father_phone IS NOT NULL
+
+
+Дана таблица subject:
+______subject______
+| id  |	name      | 
+| 1   |	Music 	  | 
+...................
+| 10  | Economics | 
+Найти, сколько предметов начинаются на букву E. Результирующей колонке задать временное название - number_of_subjects.
+
+SELECT COUNT(id) AS number_of_subjects
+FROM subject
+WHERE name 
+LIKE 'E%'
