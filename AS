@@ -1,0 +1,42 @@
+Дана таблица subject:
+______subject______
+| id  |	name      |
+| 1   |	Music 	  |
+...................
+| 10  | Economics |
+Используя оператор 'LIKE', найти предметы, название которых состоит из 7 или более букв. Ваше решение должно содержать два столбца: subject_id и subject_name.
+
+SELECT id AS subject_id, name AS subject_name
+FROM subject 
+WHERE name LIKE '______%'
+
+
+Дана таблица dish:
+_______________________dish_______________________
+| id  |	name         | price | weight | calories |
+| 1   |	Baked potato | 30    | 200    | 300      |
+..................................................
+| 10  | Omelette     | 85    | 180    | 190      |
+Отобразите id, название и цену трех самых дорогих блюд.
+Ваше решение должно содержать три столбца: dish_id, dish_name и dish_price.
+
+SELECT id AS dish_id, name AS dish_name, price AS dish_price
+FROM dish
+WHERE price 
+ORDER BY price DESC 
+LIMIT 3
+
+
+Дана таблица book:
+____________________________________book_________________________________
+| id  |	title                           | publish_year | number_of_pages| 
+| 1   |	Functional Skills Maths Level 1	| 2009         | 232            | 
+.........................................................................
+| 10  | See Inside Your Body            | 2015         | 216            | 
+Найти самую старую книгу и вывести ее название. Результирующей колонке задать временное название - book_title.
+
+SELECT title AS book_title
+FROM book
+WHERE publish_year 
+ORDER BY publish_year
+LIMIT 1
