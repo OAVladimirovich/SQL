@@ -1,0 +1,118 @@
+Дана таблица dish:
+_______________________dish_______________________
+| id  |	name         | price | weight | calories |
+| 1   |	Baked potato | 30    | 200    | 300      |
+..................................................
+| 10  | Omelette     | 85    | 180    | 190      |
+Отобразить информацию обо всех существующих блюдах в формате: [dish name]: [price] UAH
+Пример:
+Baked potato: 30 UAH
+Omelette: 85 UAH
+Установите временное название для полученной колонки - dish_information.
+
+SELECT CONCAT(name,': ', price, ' UAH') AS dish_information
+FROM dish
+
+
+Дана таблица staff:
+____________________________________staff__________________________________________________________________________________________
+| id  |	first_name | last_name | sex    | birth_date | position     | phone         | salary | date_of_hiring | date_of_dismissal |
+| 1   |	Stepan     | Shvets    | male   | 1990-05-07 | teacher      | +380984805362 | 7500   | 2013-07-01     | 2017-01-15        |
+...................................................................................................................................
+| 8   | Yuriy      | Dyachuk   | male   | 1988-12-01 | head teacher | +380984805362 | 11100  | 2014-11-05     | NULL              |
+Найдите количество новых работников, которые устраивались на работу в каждом году.
+Результат должен содержать следующие колонки:
+год из колонки date_of_hiring: year
+количество работников, которые устроились на работу в этот год: number_of_staff
+
+SELECT EXTRACT(YEAR FROM date_of_hiring) AS year, 
+    COUNT(date_of_hiring) AS number_of_staff
+FROM staff
+GROUP BY EXTRACT(YEAR FROM date_of_hiring)
+
+
+Дана таблица pupil:
+____________________________________pupil_____________________________________________________
+| id  |	first_name | last_name | sex    | birth_date | mother_phone  | father_phone  | city  |
+| 1   |	Eugen      | Tsven     | male   | 2000-12-01 | +380967826174 | +380998161172 | Kyiv  |
+..............................................................................................
+| 10  | Inna       | Kostenko  | female | 2009-10-15 | +380981865416 | +380981458216 | Irpin |
+Найдите, сколько учеников имеют день рождения в текущем календарном месяце.
+Установите временное название для полученной колонки - number_of_pupils
+
+SELECT COUNT(first_name) AS number_of_pupils
+FROM pupil
+WHERE EXTRACT(MONTH FROM birth_date) =  EXTRACT(MONTH FROM CURRENT_DATE)
+
+
+Дано таблицы category и product.
+Отобразить информацию о каждом из продуктов категории "Beverages" в виде: [product name] - [amount] units.
+Пример:
+Shrimp - 50 units
+Flour - 20 units
+Установите временное название для полученной колонки - product_information.
+Примечание: подсчитывать общее количество единиц для каждого продукта не нужно!
+_______category_____
+| id |    name      | 
+| 2  | Seafood      | 
+.....................
+| 4  | Grains       |
+
+__________________________product_____________________
+| id | name        | amount   | price   | category_id | 
+| 2  | Shrimp      | 50       | 450     | 2           |
+.......................................................
+| 8  | Flour       | 20       | 60      | 4           |
+
+SELECT CONCAT(product.name, ' - ', amount, ' units') AS product_information
+FROM product
+INNER JOIN category
+ON category.id = product.category_id
+WHERE category.name LIKE 'Beverages'
+
+
+Дана таблица staff:
+____________________________________staff__________________________________________________________________________________________
+| id  |	first_name | last_name | sex    | birth_date | position     | phone         | salary | date_of_hiring | date_of_dismissal |
+| 1   |	Stepan     | Shvets    | male   | 1990-05-07 | teacher      | +380984805362 | 7500   | 2013-07-01     | 2017-01-15        |
+...................................................................................................................................
+| 8   | Yuriy      | Dyachuk   | male   | 1988-12-01 | head teacher | +380984805362 | 11100  | 2014-11-05     | NULL              |
+Найдите информацию (имя и фамилия) об уволенных работниках. Дату увольнения представьте в трех разных колонках: день, месяц, год.
+Результат должен содержать следующие колонки: first_name, last_name, day, month, year.
+
+SELECT first_name, 
+    last_name, 
+    EXTRACT(DAY FROM date_of_dismissal) AS DAY,
+    EXTRACT(MONTH FROM date_of_dismissal) AS MONTH,
+    EXTRACT(YEAR FROM date_of_dismissal) AS YEAR
+FROM staff
+WHERE date_of_dismissal IS NOT NULL
+
+
+Дано таблицы scoreboard и pupil.
+Найдите информацию о среднем балле по каждому предмету для ученика с id 3.
+Результат нужно представить в колонке под названием pupil_mark в следующем виде: [first_name] [last_name]: [subject] - [average mark].
+Пример:
+Eugen Tsven: Geography - 10
+Eugen Tsven: Math - 10
+Eugen Tsven: History - 9
+Eugen Tsven: Economics - 11
+...
+____________________________________pupil_____________________________________________________
+| id  |	first_name | last_name | sex    | birth_date | mother_phone  | father_phone  | city  |
+| 1   |	Eugen      | Tsven     | male   | 2000-12-01 | +380967826174 | +380998161172 | Kyiv  |
+..............................................................................................
+| 10  | Inna       | Kostenko  | female | 2009-10-15 | +380981865416 | +380981458216 | Irpin |
+
+_________________________scoreboard___________________________
+| id  | pupil_id  | subject      | mark | semester        | year |
+| 4   | 1         | Geography    | 10   | FIRST SEMESTER  | 2015 |
+...............................................................
+| 167 | 10        | Math         | 9    | SECOND SEMESTER | 2020 |
+
+SELECT CONCAT(pupil.first_name, ' ', pupil.last_name, ': ', scoreboard.subject, ' - ', AVG(scoreboard.mark)) AS pupil_mark
+FROM scoreboard
+INNER JOIN pupil
+ON pupil.id = scoreboard.pupil_id
+WHERE pupil.id = 3
+GROUP BY scoreboard.subject
