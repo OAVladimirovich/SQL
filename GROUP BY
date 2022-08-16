@@ -1,0 +1,83 @@
+Дана таблица pupil:
+____________________________________pupil_____________________________________________________
+| id  |	first_name | last_name | sex    | birth_date | mother_phone  | father_phone  | city  |
+| 1   |	Eugen      | Tsven     | male   | 2000-12-01 | +380967826174 | +380998161172 | Kyiv  |
+..............................................................................................
+| 10  | Inna       | Kostenko  | female | 2009-10-15 | +380981865416 | +380981458216 | Irpin |
+Подсчитайте количество учеников в каждом городе.
+Результат нужно представить в виде:
+первая колонка - city
+вторая колонка - number_of_pupils
+
+SELECT city, COUNT(id) AS number_of_pupils
+FROM pupil
+GROUP BY city
+
+
+Дана таблица staff:
+____________________________________staff__________________________________________________________________________________________
+| id  |	first_name | last_name | sex    | birth_date | position     | phone         | salary | date_of_hiring | date_of_dismissal |
+| 1   |	Stepan     | Shvets    | male   | 1990-05-07 | teacher      | +380984805362 | 7500   | 2013-07-01     | 2017-01-15        |
+...................................................................................................................................
+| 4   | Anna       | Hmil      | female | 1989-01-22 | head teacher | +380674563725 | 15000  | 2017-03-17     | NULL              |
+Подсчитайте количество мужчин и женщин, которые все еще работают на работе.
+Результат нужно представить в виде:
+первая колонка - sex
+вторая колонка - number_of_staff
+
+SELECT sex, COUNT(id) AS number_of_staff
+FROM staff
+WHERE date_of_dismissal IS NULL
+GROUP BY sex
+
+
+Дана таблица pupil:
+____________________________________pupil_____________________________________________________
+| id  |	first_name | last_name | sex    | birth_date | mother_phone  | father_phone  | city  |
+| 1   |	Eugen      | Tsven     | male   | 2000-12-01 | +380967826174 | +380998161172 | Kyiv  |
+..............................................................................................
+| 10  | Inna       | Kostenko  | female | 2009-10-15 | +380981865416 | +380981458216 | Irpin |
+Найдите, сколько учеников с тем или иным именем учится в школе, отсортируйте имена по алфавиту.
+Результат нужно представить в виде:
+первая колонка - first_name
+вторая колонка - number_of_pupils
+
+SELECT first_name, COUNT(id) AS number_of_pupils
+FROM pupil
+GROUP BY first_name
+ORDER BY first_name 
+
+
+Дана таблица staff:
+____________________________________staff__________________________________________________________________________________________
+| id  |	first_name | last_name | sex    | birth_date | position     | phone         | salary | date_of_hiring | date_of_dismissal |
+| 1   |	Stepan     | Shvets    | male   | 1990-05-07 | teacher      | +380984805362 | 7500   | 2013-07-01     | 2017-01-15        |
+...................................................................................................................................
+| 4   | Anna       | Hmil      | female | 1989-01-22 | head teacher | +380674563725 | 15000  | 2017-03-17     | NULL              |
+Найти максимальную зарплату для каждой должности.
+Результат нужно представить в виде:
+первая колонка - position
+вторая колонка - max_salary
+
+SELECT position, MAX(salary) max_salary
+FROM staff
+GROUP BY position
+
+
+Дана таблица book:
+____________________________________book_________________________________
+| id  |	title                           | publish_year | number_of_pages| 
+| 1   |	Functional Skills Maths Level 1	| 2009         | 232            | 
+.........................................................................
+| 10  | See Inside Your Body            | 2015         | 216            | 
+Найдите, сколько страниц печаталось каждый год в период с 2011 по 2015 год включительно, отсортируйте результат по годам в обратном порядке.
+Результат нужно представить в виде:
+первая колонка - year
+вторая колонка - number_of_pages
+
+SELECT publish_year AS year, SUM(number_of_pages) AS number_of_pages
+FROM book
+WHERE publish_year 
+BETWEEN 2011 AND 2015
+GROUP BY publish_year
+ORDER BY publish_year DESC
